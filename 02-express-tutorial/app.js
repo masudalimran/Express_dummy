@@ -1,56 +1,27 @@
-// console.log('Express Tutorial')
-const { response } = require('express')
-const http = require('http')
-const {readFileSync} = require('fs');
+const express = require('express')
+const app = express()
 
-//get all files
-const homePage = readFileSync('./index.html')
-const navBar = readFileSync('./navbar-app/index.html')
-const favicon = readFileSync('./favicon.ico')
-
-const server = http.createServer((request, response)=>{
-    console.log('user hit the server')
-    console.log(request.method)
-    console.log(request.url)
-    // response.writeHead(200, {'content-type':'text/html'})
-    // console.log(request);
-    const url = request.url
-    if(url === '/'){
-        response.writeHead(200, {'content-type':'text/html'})
-        // response.write(`<h1 style="text-align: center">Home Page</h1>`, 'utf-8')
-        // response.write(`<p style="text-align: center">Demo Paragraph</p>`, 'utf-8')
-        response.write(homePage)
-        response.end()
-    }else if(url === '/navbar' || url === '/navbar/'){
-        response.writeHead(200, {'content-type':'text/html'})
-        response.write()
-        response.end()
-        
-    }
-    else if(url == '/favicon.ico'){
-        response.writeHead(200, {'content-type':'image/x-icon'})
-        response.write(favicon)
-        response.end()
-    }
-    else if(url === '/contact/' || url === '/contact'){
-        response.writeHead(200, {'content-type':'text/html'})
-        response.write(`<h1 style="text-align: center">Contact Page</h1>`, 'utf-8')
-        response.write(`<p style="text-align: center">Demo Paragraph</p>`, 'utf-8')
-        response.end()
-    }else if(url === '/about/' || url === '/about'){
-        response.writeHead(200, {'content-type':'text/html'})
-        response.write(`<h1 style="text-align: center">About Page</h1>`, 'utf-8')
-        response.write(`<p style="text-align: center">Demo Paragraph</p>`, 'utf-8')
-        response.end()
-    }else{
-        response.writeHead(400, {'content-type':'text/html'})
-        response.write(`<h1 style="text-align: center">Error Page</h1>`, 'utf-8')
-        response.write(`<p style="text-align: center">Demo Paragraph</p>`, 'utf-8')
-        response.end()
-    } 
-    // response.end()
+app.get('/',(req,res)=>{
+    console.log('User hit the resource');
+    res.status(200).send('Home Page')
 })
 
+app.get('/about',(req,res)=>{
+    console.log('User hit the resource');
+    res.status(200).send('About Page')
+})
 
-server.listen(5000)
+app.all('*', (req, res)=>{
+    res.status(404).send('<h1 style="text-align: center;">Resource not found</h1>')
+})
 
+app.listen(5000, ()=>{
+    console.log('Server is listening on port 5000...');
+})
+//app.get
+//app.post
+//app.put
+//app.delete
+//app.all
+//app.use
+//app.listen
