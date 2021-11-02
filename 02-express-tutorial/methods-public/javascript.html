@@ -49,11 +49,16 @@
       const fetchPeople = async () => {
         try {
           const { data } = await axios.get('/api/people')
+          // console.log('DATA FOUND YAY',data);
+          // console.log('DATA FOUND YAY',data.data);
 
           const people = data.data.map((person) => {
+            // console.log(person.id);
+            // console.log(person.name);
             return `<h5>${person.name}</h5>`
           })
-          result.innerHTML = people.join('')
+          // console.log(people);
+          result.innerHTML = people.join(',')
         } catch (error) {
           result.innerHTML = `<div class="alert alert-danger">Can't Fetch Data</div>`
         }
@@ -67,13 +72,15 @@
         e.preventDefault()
         const nameValue = input.value
 
+        // console.log(nameValue);
         try {
           const { data } = await axios.post('/api/people', { name: nameValue })
           const h5 = document.createElement('h5')
           h5.textContent = data.person
+          // console.log(data)
           result.appendChild(h5)
         } catch (error) {
-          // console.log(error.response)
+          // console.log(error.response.data.msg)
           formAlert.textContent = error.response.data.msg
         }
         input.value = ''
